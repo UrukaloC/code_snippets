@@ -1,0 +1,47 @@
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { TestDataComponent } from './test-data/test-data.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { NavigationComponent } from './navigation/navigation.component';
+import { DataListComponent } from './test-data-list/test-data-list.component';
+import { AdminPanelComponent } from './admin-panel/admin-panel.component';
+import { TestDataDetailsComponent } from './test-data-details/test-data-details.component';
+import { AdminSnippetsComponent } from './admin-snippets/admin-snippets.component';
+import { ProtectedRouteGuard } from './guards/protected-route.guard';
+import { IsAdminGuardGuard } from './guards/is-admin-guard.guard';
+import { IsBlockedUserGuard } from './guards/is-blocked-user.guard';
+import { MySnippetsComponent } from './my-snippets/my-snippets.component';
+import { TestDataEditComponent } from './test-data-edit/test-data-edit.component';
+import { FooterComponent } from './footer/footer.component';
+
+
+const APP_ROUTES: Routes = [
+    {path: 'home', component: HomeComponent},
+    {path: 'login' , component: LoginComponent},
+    {path: 'register' , component: RegisterComponent},
+    { path: '', redirectTo: 'home', pathMatch: 'full' },
+    {path: 'test-data', component: TestDataComponent, canActivate: [ProtectedRouteGuard] },
+    {path: 'test-data-list', component: DataListComponent, canActivate: [ProtectedRouteGuard]  },
+    {path: 'test-data-details', component: TestDataDetailsComponent, canActivate: [ProtectedRouteGuard] },
+    {path: 'test-data-edit', component: TestDataEditComponent, canActivate: [ProtectedRouteGuard] },
+    { path: 'home', component: HomeComponent},
+    {path: 'admin-panel', component: AdminPanelComponent, canActivate: [ProtectedRouteGuard, IsAdminGuardGuard]},
+    {path: 'admin-snippets', component: AdminSnippetsComponent, canActivate: [ProtectedRouteGuard, IsAdminGuardGuard]},
+    {path: 'my-snippets', component: MySnippetsComponent, canActivate: [ProtectedRouteGuard]},
+    {path: 'footer', component: FooterComponent},
+    { path: '**', component: NotFoundComponent }
+];
+
+@NgModule({
+    imports: [RouterModule.forRoot(APP_ROUTES)],
+    exports: [RouterModule]
+})
+
+export class AppRouterModule {
+
+}
+
+
