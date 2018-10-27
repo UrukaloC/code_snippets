@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./admin-panel.component.css']
 })
 export class AdminPanelComponent implements OnInit {
+  p;
   user: User;
   public searchString: string;
   public usersList: Observable<User[]>;

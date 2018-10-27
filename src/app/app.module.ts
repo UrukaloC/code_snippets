@@ -34,6 +34,7 @@ import { FooterComponent } from './footer/footer.component';
 import { FilterPipeDataList } from './my-snippets/filter.pipe-my-snippets';
 import { FilterAndSortPipe } from './pipes/filter-and-sort.pipe';
 import { SortByDatePipe } from './pipes/sort-by-date.pipe';
+import { FilterPipeLanguage } from './test-data-list/filter-pipe-language';
 
 
 
@@ -45,6 +46,7 @@ import { SortByDatePipe } from './pipes/sort-by-date.pipe';
     FilterPipeDate,
     FilterPipeSearch,
     FilterPipeDataList,
+    FilterPipeLanguage,
     NavigationComponent,
     HomeComponent,
     LoginComponent,
