@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TestDataService } from '../services/test-data.service';
-import { Observable } from 'rxjs';
 import { DataTest } from '../models/snippet.model';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 @Component({
   selector: 'app-admin-snippets',
@@ -11,44 +10,26 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./admin-snippets.component.css']
 })
 export class AdminSnippetsComponent implements OnInit {
-  dataList: DataTest[];
-  $key: string;
-  dataForm: boolean;
-  public searchString: string;
-  constructor(private dataService: TestDataService, private route: ActivatedRoute, private router: Router) { }
 
-  ngOnInit() {
-    this.dataService.getData().snapshotChanges().subscribe(item => {
-      this.dataList = [];
-      item.forEach(element => {
-        const y = element.payload.toJSON();
-        y['$key'] = element.key;
-        this.dataList.push(y as DataTest);
-      });
+  dataList: DataTest [];
+  p: any;
+  public searchString: string;
+  constructor(private _dataService: TestDataService,
+              private _db: AngularFireDatabase,
+              private _router: Router) {}
+
+  ngOnInit(): void {
+    this._dataService.getSnippets().valueChanges().subscribe(list => {
+      console.log(list);
+      this.dataList = list.reverse();
     });
   }
-  onView(view: DataTest) {
-    this.dataService.selectedData = Object.assign({}, view);
-    this.router.navigate(['/test-data-details']);
-  }
 
-  onEdit(edit: DataTest) {
-    this.dataService.selectedData = Object.assign({}, edit);
-    this.router.navigate(['/test-data-edit']);
-  }
-
-  onDelete(key: string) {
-    if (confirm('Are you sure to delete this record ?') === true) {
-      this.dataService.deleteData(key);
+  deleteSnippet(uid) {
+    if (confirm('Are you sure to delete this record?') === true) {
+      const dataRef = this._db.object(`data/${uid}`);
+      dataRef.remove();
+      this._router.navigate(['admin-snippets']);
     }
   }
-  onSubmit(dataForm: NgForm) {
-    if (dataForm.value.$key == null) {
-      this.dataService.insertData(dataForm.value);
-    } else {
-      this.dataService.updateData(dataForm.value);
-  }
-
-
-}
 }

@@ -5,7 +5,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import {NgxPaginationModule} from 'ngx-pagination';
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
@@ -30,13 +30,10 @@ import { MySnippetsComponent } from './my-snippets/my-snippets.component';
 import { FilterPipeSearch } from './test-data-list/filter.pipe-search';
 import { FilterPipeDate } from './test-data-list/filter.pipe-date';
 import { TestDataEditComponent } from './test-data-edit/test-data-edit.component';
-import { FilterPipeLanguage } from './test-data-list/filter-pipe-language';
 import { FooterComponent } from './footer/footer.component';
 import { FilterPipeDataList } from './my-snippets/filter.pipe-my-snippets';
-// import { HighlightModule } from 'ngx-highlightjs';
-// import { CommonModule } from '../../node_modules/@angular/common';
-// import { PrismModule } from '../../node_modules/@ngx-prism/core'
-
+import { FilterAndSortPipe } from './pipes/filter-and-sort.pipe';
+import { SortByDatePipe } from './pipes/sort-by-date.pipe';
 
 
 
@@ -48,7 +45,6 @@ import { FilterPipeDataList } from './my-snippets/filter.pipe-my-snippets';
     FilterPipeDate,
     FilterPipeSearch,
     FilterPipeDataList,
-    FilterPipeLanguage,
     NavigationComponent,
     HomeComponent,
     LoginComponent,
@@ -62,7 +58,9 @@ import { FilterPipeDataList } from './my-snippets/filter.pipe-my-snippets';
     MySnippetsComponent,
     TestDataEditComponent,
     TestDataEditComponent,
-    FooterComponent
+    FooterComponent,
+    FilterAndSortPipe,
+    SortByDatePipe
   ],
   imports: [
     BrowserModule,
@@ -74,11 +72,7 @@ import { FilterPipeDataList } from './my-snippets/filter.pipe-my-snippets';
     FormsModule,
     SharedModule,
     NgxPaginationModule,
-    // HighlightModule.forRoot({ theme: 'agate'}),
-    // CommonModule,
-    // PrismModule
-
-
+    NgbModule
   ],
   providers: [TestDataService, UserService],
   bootstrap: [AppComponent],

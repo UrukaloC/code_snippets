@@ -41,8 +41,8 @@ export class AuthService {
       this._userService.createUser(newUser);
       this._userService.updateUserStatus(user.uid, UserStatus.Active);
       console.log(newUser);
+      this._router.navigate(['/test-data-list']);
     });
-    this._router.navigate(['/home']);
   }
 
   tryToGetLoggedInUser(): Observable<firebase.User> {
@@ -83,28 +83,19 @@ export class AuthService {
     const afSub: Subscription = this._afAuth.authState.subscribe((firebaseUser) => {
       useruid = firebaseUser.uid;
       afSub.unsubscribe();
-      this._userService.updateUserStatus(firebaseUser.uid, UserStatus.Inactive);
       this.user = firebaseUser;
-      this._afAuth.auth.signOut();
-      this._router.navigate(['/home']);
+      this._afAuth.auth.signOut().then(() => {
+        this._userService.updateUserStatus(firebaseUser.uid, UserStatus.Inactive);
+        (this._router.navigate(['/home']));
+      });
     });
   }
+
 
   getSignedInUser() {
     return this._signedInUser$;
   }
 
-  // private authorizeUser(): void {
-  //   this._authorizeRoute$ = new Observable(observer => {
-  //     this._afAuth.authState.subscribe(firebaseUser => {
-  //       if (!firebaseUser) {
-  //         observer.next(true);
-  //       } else {
-  //         observer.next(false);
-  //       }
-  //     });
-  //   });
-  // }
 
   routeProtected(): Observable<boolean> {
     return new Observable(observer => {

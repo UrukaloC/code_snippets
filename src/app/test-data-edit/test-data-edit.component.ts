@@ -1,26 +1,37 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import {Location} from '@angular/common';
 import { TestDataService } from '../services/test-data.service';
-import {Router} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import { DataTest } from '../models/snippet.model';
 import { NgForm } from '../../../node_modules/@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-test-data-edit',
   templateUrl: './test-data-edit.component.html',
   styleUrls: ['./test-data-edit.component.css']
 })
-export class TestDataEditComponent implements OnInit{
+export class TestDataEditComponent implements OnInit {
 
+  @ViewChild('dataForm') dataForm: NgForm;
+  data: DataTest;
+  eventSub: Subscription;
+  uid: string;
 
-  list: DataTest;
-  highlighted: boolean = false;
-  data: DataTest = new DataTest();
-
-  constructor(private dataService: TestDataService, private router: Router, private _location: Location) { }
+  constructor(private _dataService: TestDataService,
+              private router: Router,
+              private _location: Location,
+              private _route: ActivatedRoute) { }
 
 
   ngOnInit() {
+
+        this.uid = this._route.snapshot.paramMap.get('id');
+        this._dataService.getSnippet(this.uid).subscribe((data: DataTest) => {
+            data.uid = this.uid;
+            this.data = data;
+        });
+
   }
 
   backClicked() {
@@ -32,11 +43,12 @@ export class TestDataEditComponent implements OnInit{
 
     console.log(this.data.isPrivate);
   }
-   
-  onSubmit(dataForm: NgForm) {
-    console.log(dataForm.value);
-      this.dataService.updateData(dataForm.value);
-  
-  this.router.navigate(['/test-data-list']);
-}
+
+  onSubmit() {
+    console.log(this.data);
+    this.data.date = new Date().toLocaleString();
+    this._dataService.updateSnippet(this.data);
+
+    this.router.navigate(['/my-snippets']);
+  }
 }

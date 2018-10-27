@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DataTest } from '../models/snippet.model';
 import { TestDataService } from '../services/test-data.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AngularFireAuth } from '../../../node_modules/angularfire2/auth';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 @Component({
   selector: 'app-my-snippets',
@@ -11,15 +11,22 @@ import { AngularFireAuth } from '../../../node_modules/angularfire2/auth';
   styleUrls: ['./my-snippets.component.css']
 })
 export class MySnippetsComponent implements OnInit {
-  dataList: DataTest[];
-  $key: string;
-  dataForm: boolean;
-  data: DataTest = new DataTest();
+
+  errorMessage: string;
+  filteredList: DataTest [];
+  private _snippets: DataTest [] = [];
+  data: DataTest;
   userId: string;
-  constructor(private dataService: TestDataService, private route: ActivatedRoute, private router: Router,
-  private afAuth: AngularFireAuth) {
+  p: any;
+  searchString: string;
+  filterString: string;
+
+  constructor(private _dataService: TestDataService,
+              private _router: Router,
+              private _afAuth: AngularFireAuth,
+              private _db: AngularFireDatabase) {
     // subscribe na firebase.User
-    this.afAuth.authState.subscribe(user => {
+    this._afAuth.authState.subscribe(user => {
       if (user) {
         this.userId = user.uid;
         console.log(this.userId);
@@ -27,41 +34,22 @@ export class MySnippetsComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.dataService.getData().snapshotChanges().subscribe(item => {
-      this.dataList = [];
-      item.forEach(element => {
-        const y = element.payload.toJSON();
-        console.log(y);
-        y['$key'] = element.key;
-        if (y['userId'] === this.userId) {
-          this.dataList.push(y as DataTest);
-        }
+  ngOnInit(): void {
+
+    this._dataService.getUserSnippets(this.userId).subscribe(list => {
+        console.log(list);
+        this.filteredList = list;
+        this._snippets = list;
       });
-    });
   }
 
-  onView(edit: DataTest) {
-    this.dataService.selectedData = Object.assign({}, edit);
-    this.router.navigate(['/test-data-details']);
+  deleteSnippet(uid) {
+    console.log( 'Uid: ' + uid);
+      if (confirm('Are you sure to delete this record ?') === true) {
+        const dataRef = this._db.object(`data/${uid}`);
+        dataRef.remove();
+        this._router.navigate(['my-snippets']);
+      }
   }
 
-  onEdit(edit: DataTest) {
-    this.dataService.selectedData = Object.assign({}, edit);
-    this.router.navigate(['/test-data-edit']);
-  }
-
-  onDelete(key: string) {
-    if (confirm('Are you sure to delete this record ?') === true) {
-      this.dataService.deleteData(key);
-    }
-  }
-
-  onSubmit(dataForm: NgForm) {
-    if (dataForm.value.$key == null) {
-      this.dataService.insertData(dataForm.value);
-    } else {
-      this.dataService.updateData(dataForm.value);
-  }
-}
 }

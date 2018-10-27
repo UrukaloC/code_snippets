@@ -1,5 +1,5 @@
 .img {
-  background: url("../../assets/img/adm-bg-image.jpg") center center repeat;
+  background: url("assets/img/adm-bg-image.jpg") center center repeat;
   background-size: cover;
   width: 100%;
   min-height: 100vh;

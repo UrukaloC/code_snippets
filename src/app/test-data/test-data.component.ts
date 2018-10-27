@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { TestDataService } from '../services/test-data.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { DataTest } from '../models/snippet.model';
 
 
@@ -11,51 +11,27 @@ import { DataTest } from '../models/snippet.model';
   styleUrls: ['./test-data.component.css']
 })
 export class TestDataComponent implements OnInit {
-  data: DataTest = new DataTest();
 
-  constructor(private dataService: TestDataService, private router: Router) { }
+  data: DataTest;
+  @ViewChild('dataForm') formDeclaration: NgForm;
 
-  ngOnInit() {
-    console.log(JSON.stringify(this.data, null, 2));
+  constructor(private _dataService: TestDataService,
+              private _route: ActivatedRoute,
+              private _router: Router) {}
 
-    this.dataService.getData();
-    this.resetForm();
-    this.dataService.selectedData = {title: null, date: null, notes: null, code: null, programmL: null, $key: null};
+  ngOnInit() {}
 
+  createSnippet() {
+    const newSnippet = this.formDeclaration.form.value;
+    this._dataService.createSnippet(newSnippet);
+    this._router.navigate(['my-snippets']);
   }
 
+  resetForm() {
+    this.formDeclaration.reset();
+  }
   isDataPrivate(p: boolean): void {
-    this.data.isPrivate = p;
-
-    console.log(this.data.isPrivate);
-  }
-
-  onSubmit(dataForm: NgForm) {
-    const submitData = new DataTest();
-    Object.assign(submitData, dataForm.value);
-    submitData.date = new Date();
-
-    if (dataForm.value.$key == null) {
-      this.dataService.insertData(submitData);
-    } else {
-      this.dataService.updateData(dataForm.value);
-      this.resetForm(dataForm);
+      this.data.isPrivate = p;
+      console.log(this.data.isPrivate);
     }
-    this.router.navigate(['/test-data-list']);
-  }
-
-  resetForm(dataForm?: NgForm) {
-    if (dataForm != null) {
-      dataForm.reset();
-      this.dataService.selectedData = {
-        $key: null,
-        title: '',
-        notes: '',
-        programmL: '',
-        date: new Date(),
-        code: ''
-      };
-    }
-  }
-
 }

@@ -2,73 +2,70 @@ import { Injectable } from '@angular/core';
 import { AngularFireList, AngularFireDatabase } from 'angularfire2/database';
 import { DataTest } from '../models/snippet.model';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { User } from '../models/user.model';
+import { Observable } from 'rxjs';
+import { v4 as uuid } from 'uuid';
+import { map } from 'rxjs/operators';
 
 
 
 
 @Injectable()
 export class TestDataService {
+
+  data: DataTest;
   userId: string;
   author: string;
-  dataList: AngularFireList<any>;
-  selectedData: DataTest = new DataTest();
-  constructor(private firebase: AngularFireDatabase, private afAuth: AngularFireAuth) {
-    this.afAuth.authState.subscribe(user => {
-      if (user) {this.userId = user.uid;
-                this.author = user.displayName;
-              console.log(this.author); }
+  constructor( private _db: AngularFireDatabase,
+                private _afAuth: AngularFireAuth) {
+    // subscribe na firebase.User
+    this._afAuth.authState.subscribe(user => {
+      if (user) {
+        this.userId = user.uid;
+        this.author = user.displayName;
+        console.log(this.userId);
+      }
     });
   }
 
-  getData() {
-    this.dataList = this.firebase.list('data');
-    this.firebase.list('data', ref => ref.orderByChild('data/id/date'));
-    return this.dataList;
-
-
-      // this.firebase.list('data', ref => ref.orderByChild('date'))
-  //   firebase.database().ref()
-  // .orderByChild('date')
-  // .on('value', function(snapshot) {
-  // this.data = [];
-
-  // snapshot.forEach(function(child) {
-  //   this.data.push(child.val());
-  // }.bind(this))
-
-  // }
-
+  getSnippets(): AngularFireList<DataTest> {
+    return this._db.list('data', ref => ref.orderByChild('date'));
   }
 
-  insertData(data: DataTest) {
-    this.dataList.push({
-      title: data.title,
-      notes: data.notes,
-      programmL: data.programmL,
-      date: new Date().toString(),
-      code: data.code,
-      isPrivate: data.isPrivate,
-      userId: this.userId,
-      author: this.author
-    });
+  getSnippet(uid: string): Observable<DataTest> {
+    return this._db.object<DataTest>(`data/${uid}`)
+      .valueChanges();
   }
 
-  updateData(data: DataTest) {
-    this.dataList.update(data.$key,
-      {
-      title: data.title,
-      notes: data.notes,
-      programmL: data.programmL,
-      date: new Date(),
-      code: data.code,
-      isPrivate: data.isPrivate
-      });
+  getUserSnippets(userUID: string): Observable<DataTest[]> {
+    return this._db.list('data', ref => ref.orderByChild('userId').equalTo(userUID))
+                    .valueChanges()
+                    .pipe(
+                      map((events: DataTest[]) =>
+                        events.map((event: DataTest) => new DataTest().deserialize(event))
+                      )
+                    );
   }
 
-
-  deleteData($key: string) {
-    this.dataList.remove($key);
+  getPublicSnippets(publicSnippet: string): Observable<DataTest[]> {
+    return this._db.list('data', ref => ref.orderByChild('isPrivate').equalTo(publicSnippet))
+                    .valueChanges()
+                    .pipe(
+                      map((events: DataTest[]) =>
+                        events.map((event: DataTest) => new DataTest().deserialize(event))
+                      )
+                    );
   }
 
+  createSnippet(newSnippet: DataTest): void {
+    newSnippet.uid = uuid();
+    newSnippet.author = this.author;
+    newSnippet.date = new Date().toLocaleString();
+    newSnippet.userId = this.userId;
+    this._db.object('data/' + newSnippet.uid).set(newSnippet);
+  }
+
+  updateSnippet(data: DataTest): Promise<void> {
+    const dataRef = this._db.object<DataTest>(`data/${data.uid}`);
+    return dataRef.update(data);
+  }
 }

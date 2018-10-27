@@ -72,3 +72,15 @@ img {
   font-weight: bold;
   font-size: 18px;
 }
+
+/* Responsive navigation */
+@media screen and (min-width: 992px) {
+  .space {
+    display: none!important;
+  }
+}
+
+/* Space so dropdown list can be seen in mobile-mod */
+.space {
+  padding-right: 70px;
+}
