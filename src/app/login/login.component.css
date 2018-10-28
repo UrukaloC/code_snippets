@@ -1,9 +1,9 @@
 .login-container {
+    min-height: 800px;
     padding-top: 130px;
     width: 100%;
     display: block;
     margin: 0 auto;
-    height: 800px;
 }
 
 .login-container h2 {

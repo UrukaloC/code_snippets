@@ -3,18 +3,20 @@ import { Subscription, Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { User } from '../models/user.model';
 
+
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent implements OnInit {
-  constructor(private _authService: AuthService) { }
   public signedIn: Observable<boolean>;
   private _userSub: Subscription;
   user: firebase.User;
   public isAdmin: Observable<boolean>;
   public isBlocked: Observable<boolean>;
+
+  constructor(private _authService: AuthService) { }
 
   ngOnInit() {
     this.signedIn = this._authService.routeProtected();
@@ -25,7 +27,10 @@ export class NavigationComponent implements OnInit {
     });
 
   }
+
   logOut() {
     this._authService.logOut();
   }
+
+
 }

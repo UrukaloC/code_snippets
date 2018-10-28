@@ -11,7 +11,6 @@ import { AngularFireDatabase } from 'angularfire2/database';
   styleUrls: ['./my-snippets.component.css']
 })
 export class MySnippetsComponent implements OnInit {
-
   errorMessage: string;
   filteredList: DataTest [];
   private _snippets: DataTest [] = [];
@@ -32,15 +31,16 @@ export class MySnippetsComponent implements OnInit {
         console.log(this.userId);
       }
     });
+
   }
 
   ngOnInit(): void {
-
     this._dataService.getUserSnippets(this.userId).subscribe(list => {
-        console.log(list);
-        this.filteredList = list;
-        this._snippets = list;
-      });
+      console.log(list);
+      this.filteredList = list;
+      this._snippets = list;
+    });
+
   }
 
   deleteSnippet(uid) {
@@ -51,5 +51,6 @@ export class MySnippetsComponent implements OnInit {
         this._router.navigate(['my-snippets']);
       }
   }
+
 
 }

@@ -1,7 +1,7 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {Location} from '@angular/common';
 import { TestDataService } from '../services/test-data.service';
-import {Router, ActivatedRoute} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import { DataTest } from '../models/snippet.model';
 
 @Component({
@@ -14,11 +14,10 @@ export class TestDataDetailsComponent implements OnInit {
   uid: string;
   list: DataTest;
 
-  constructor(private router: Router,
-              private _location: Location,
+  constructor(private _location: Location,
               private _route: ActivatedRoute,
-              private _dataService: TestDataService) { }
-
+              private _dataService: TestDataService
+) { }
 
   ngOnInit() {
     this.uid = this._route.snapshot.paramMap.get('id');
@@ -26,9 +25,12 @@ export class TestDataDetailsComponent implements OnInit {
             data.uid = this.uid;
             this.data = data;
         });
+
   }
 
   backClicked() {
     this._location.back();
-   }
+  }
+
+
 }

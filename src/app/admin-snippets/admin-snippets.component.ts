@@ -10,13 +10,12 @@ import { AngularFireDatabase } from 'angularfire2/database';
   styleUrls: ['./admin-snippets.component.css']
 })
 export class AdminSnippetsComponent implements OnInit {
-
   dataList: DataTest [];
   p: any;
   public searchString: string;
   constructor(private _dataService: TestDataService,
               private _db: AngularFireDatabase,
-              private _router: Router) {}
+              private _router: Router) { }
 
   ngOnInit(): void {
     this._dataService.getSnippets().valueChanges().subscribe(list => {
@@ -32,4 +31,5 @@ export class AdminSnippetsComponent implements OnInit {
       this._router.navigate(['admin-snippets']);
     }
   }
+
 }

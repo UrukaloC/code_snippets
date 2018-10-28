@@ -16,9 +16,12 @@ export class LoginComponent implements OnInit {
   errorMessage: string;
   @ViewChild('loginForm')
   loginForm: NgForm;
-  constructor(
-    private _authService: AuthService
-  ) { }
+
+  constructor(private _authService: AuthService) { }
+
+  ngOnInit() {
+  }
+
   logIn(): void {
     this._authService
       .signInWithEmailAndPassword(this.user.email, this.user.password).then()
@@ -26,7 +29,6 @@ export class LoginComponent implements OnInit {
         this.errorMessage = error.message;
       });
   }
-  ngOnInit() {
-  }
+
 
 }

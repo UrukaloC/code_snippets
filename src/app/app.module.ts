@@ -1,83 +1,71 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-import {NgxPaginationModule} from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
+import { AppRoutingModule } from './/app-routing.module';
 
 import { AppComponent } from './app.component';
-import { environment } from '../environments/environment';
-import { TestDataComponent } from './test-data/test-data.component';
-import { TestDataService } from './services/test-data.service';
-import { DataListComponent } from './test-data-list/test-data-list.component';
-import { NavigationComponent } from './navigation/navigation.component';
-import { AppRouterModule } from './app.router';
+import { environment } from 'environments/environment';
+
+import { CustomEmailValidatorDirective } from './directives/custom-email-validator.directive';
+import { EqualStringsDirective } from './directives/equal-strings.directive';
+
+import { FilterAndSortPipe } from './pipes/filter-and-sort.pipe';
+import { FilterPipe } from './pipes/filter.pipe';
+import { SortByDatePipe } from './pipes/sort-by-date.pipe';
+import { AdminPanelComponent } from './admin-panel/admin-panel.component';
+import { AdminSnippetsComponent } from './admin-snippets/admin-snippets.component';
+import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
-import { UserService } from './services/user.service';
-import { FormsModule } from '@angular/forms';
-import { NotFoundComponent } from './not-found/not-found.component';
-import { EqualStringsDirective } from './directives/equal-strings.directive';
-import { AdminPanelComponent } from './admin-panel/admin-panel.component';
-import { TestDataDetailsComponent } from './test-data-details/test-data-details.component';
-import { SharedModule } from './shared.module';
-import { AdminSnippetsComponent } from './admin-snippets/admin-snippets.component';
-import { CustomEmailValidatorDirective } from './directives/custom-email-validator.directive';
 import { MySnippetsComponent } from './my-snippets/my-snippets.component';
-import { FilterPipeSearch } from './test-data-list/filter.pipe-search';
-import { FilterPipeDate } from './test-data-list/filter.pipe-date';
+import { NavigationComponent } from './navigation/navigation.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { RegisterComponent } from './register/register.component';
+import { TestDataDetailsComponent } from './test-data-details/test-data-details.component';
 import { TestDataEditComponent } from './test-data-edit/test-data-edit.component';
-import { FooterComponent } from './footer/footer.component';
-import { FilterPipeDataList } from './my-snippets/filter.pipe-my-snippets';
-import { FilterAndSortPipe } from './pipes/filter-and-sort.pipe';
-import { SortByDatePipe } from './pipes/sort-by-date.pipe';
-import { FilterPipeLanguage } from './test-data-list/filter-pipe-language';
-
-
+import { TestDataListComponent } from './test-data-list/test-data-list.component';
+import { TestDataComponent } from './test-data/test-data.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TestDataComponent,
-    DataListComponent,
-    FilterPipeDate,
-    FilterPipeSearch,
-    FilterPipeDataList,
-    FilterPipeLanguage,
-    NavigationComponent,
+    CustomEmailValidatorDirective,
+    EqualStringsDirective,
+    FilterAndSortPipe,
+    FilterPipe,
+    SortByDatePipe,
+    AdminPanelComponent,
+    AdminSnippetsComponent,
+    FooterComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent,
-    NotFoundComponent,
-    EqualStringsDirective,
-    AdminPanelComponent,
-    TestDataDetailsComponent,
-    AdminSnippetsComponent,
-    CustomEmailValidatorDirective,
     MySnippetsComponent,
+    NavigationComponent,
+    NotFoundComponent,
+    RegisterComponent,
+    TestDataDetailsComponent,
     TestDataEditComponent,
-    TestDataEditComponent,
-    FooterComponent,
-    FilterAndSortPipe,
-    SortByDatePipe
+    TestDataListComponent,
+    TestDataComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    FormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    AppRouterModule,
-    FormsModule,
-    SharedModule,
     NgxPaginationModule,
-    NgbModule
+    NgbModule,
+    AppRoutingModule
   ],
-  providers: [TestDataService, UserService],
-  bootstrap: [AppComponent],
-  exports: [ TestDataDetailsComponent ]
+  providers: [],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -13,17 +13,14 @@ import { Location } from '@angular/common';
 export class AuthService {
   private _signedInUser$: Observable<firebase.User>;
   public signedInUser: firebase.User;
-  // private _authorizeRoute$: Observable<boolean>;
   user: User;
-  constructor(
-    private _afAuth: AngularFireAuth,
-    private _userService: UserService,
-    private _router: Router,
-    private _location: Location
-  ) {
-    this.tryToGetLoggedInUser();
-  }
-  // Register
+  constructor(private _afAuth: AngularFireAuth,
+              private _userService: UserService,
+              private _router: Router,
+              private _location: Location) {
+                this.tryToGetLoggedInUser();
+              }
+
   signUpWithEmailAndPassword(newUser: User) {
     this._afAuth.auth.
     createUserWithEmailAndPassword(newUser.email, newUser.password)
@@ -91,20 +88,20 @@ export class AuthService {
     });
   }
 
-
   getSignedInUser() {
     return this._signedInUser$;
   }
 
-
-  routeProtected(): Observable<boolean> {
+  routeProtected(isLoginPage?: boolean): Observable<boolean> {
     return new Observable(observer => {
       this._afAuth.authState.subscribe(firebaseUser => {
         if (firebaseUser) {
           observer.next(true);
         } else {
           observer.next(false);
-          this._location.back();
+          if (isLoginPage) {
+            this._location.back();
+          }
         }
       });
     });
@@ -141,3 +138,4 @@ export class AuthService {
     });
   }
 }
+

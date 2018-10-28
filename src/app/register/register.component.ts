@@ -15,12 +15,13 @@ export class RegisterComponent implements OnInit {
 
   constructor(private _authService: AuthService) { }
 
+  ngOnInit() {
+  }
+
   onSubmit() {
     console.log(this.signupForm);
     this._authService.signUpWithEmailAndPassword(this.user);
   }
 
-  ngOnInit() {
-  }
 
 }

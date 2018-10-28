@@ -6,17 +6,15 @@ import { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 import { map } from 'rxjs/operators';
 
-
-
-
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class TestDataService {
-
   data: DataTest;
   userId: string;
   author: string;
-  constructor( private _db: AngularFireDatabase,
-                private _afAuth: AngularFireAuth) {
+  constructor(private _db: AngularFireDatabase,
+              private _afAuth: AngularFireAuth) {
     // subscribe na firebase.User
     this._afAuth.authState.subscribe(user => {
       if (user) {

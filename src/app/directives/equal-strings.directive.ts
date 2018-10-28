@@ -3,7 +3,9 @@ import { NG_VALIDATORS, NgModel, AbstractControl } from '@angular/forms';
 
 @Directive({
   selector: '[appEqualStrings]',
-  providers: [{ provide: NG_VALIDATORS, useExisting: EqualStringsDirective, multi: true}]
+  providers: [{ provide: NG_VALIDATORS,
+                useExisting: EqualStringsDirective,
+                multi: true}]
 })
 export class EqualStringsDirective {
 
@@ -24,5 +26,4 @@ export class EqualStringsDirective {
       }
     }
   }
-
 }

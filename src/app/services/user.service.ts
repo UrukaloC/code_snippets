@@ -9,16 +9,15 @@ import { AngularFireAuth } from '../../../node_modules/angularfire2/auth';
 })
 export class UserService {
   public usersList: Observable<User[]>;
-
-  constructor(private _db: AngularFireDatabase) { }
   user: User;
+  constructor(private _db: AngularFireDatabase) { }
 
   createUser(newUser: User): void {
     this._db.object(`user/${newUser.id}`).set(newUser);
   }
 
   public getUsers(): AngularFireList<User> {
-    return this._db.list('/user');
+    return this._db.list('/user', ref => ref.orderByChild('displayName'));
   }
 
   getUser(id: string): Observable<User> {
@@ -31,21 +30,21 @@ export class UserService {
         this._db.object(`user/${user.id}`).update(user);
         firebaseDbSubscription.unsubscribe();
       });
-    }
-
-    blockUser(useruid): void {
-      const firebaseDbSubscription: Subscription = this._db.object(`user/${useruid}`).valueChanges().subscribe((user: User) => {
-        user.isBlocked = true;
-        this._db.object(`user/${user.id}`).update(user);
-        firebaseDbSubscription.unsubscribe();
-      });
-    }
-
-    unblockUser(useruid): void {
-      const firebaseDbSubscription: Subscription = this._db.object(`user/${useruid}`).valueChanges().subscribe((user: User) => {
-        user.isBlocked = false;
-        this._db.object(`user/${user.id}`).update(user);
-        firebaseDbSubscription.unsubscribe();
-      });
-    }
   }
+
+  blockUser(useruid): void {
+    const firebaseDbSubscription: Subscription = this._db.object(`user/${useruid}`).valueChanges().subscribe((user: User) => {
+      user.isBlocked = true;
+      this._db.object(`user/${user.id}`).update(user);
+      firebaseDbSubscription.unsubscribe();
+    });
+  }
+
+  unblockUser(useruid): void {
+    const firebaseDbSubscription: Subscription = this._db.object(`user/${useruid}`).valueChanges().subscribe((user: User) => {
+      user.isBlocked = false;
+      this._db.object(`user/${user.id}`).update(user);
+      firebaseDbSubscription.unsubscribe();
+    });
+  }
+}

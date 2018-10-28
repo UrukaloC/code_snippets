@@ -6,11 +6,11 @@ import { AuthService } from 'app/services/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ProtectedRouteGuard implements CanActivate {
+export class LoginRouteGuard implements CanActivate {
   constructor(private _authService: AuthService) {}
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    return this._authService.routeProtected();
+    return this._authService.routeProtected(true);
   }
 }

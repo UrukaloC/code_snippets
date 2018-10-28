@@ -1,12 +1,12 @@
 .img {
-    background: url("assets/img/details-image.jpg") center center no-repeat;
-    background-size: cover;
-    width: 100%;
-    min-height: 100vh;
-    z-index: -1;
-    position: absolute;
-    top: 0;
-    left: 0;
+  background: url("assets/img/details-image.jpg") center center no-repeat;
+  background-size: cover;
+  width: 100%;
+  min-height: 100vh;
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .contact-form {
@@ -27,11 +27,11 @@
     margin-bottom: -7%;
 }
 
-.contact-form h4 {
-    margin-bottom: 5%;
+.contact-form h3 {
+    margin-bottom: 10%;
     margin-top: -5%;
     text-align: center;
-    color: rgba(220, 233, 235, 1);
+    color:rgba(220, 233, 235, 1);
     font-size: 1.8vw;
 }
 
@@ -47,7 +47,6 @@ table.table-sm.table-hover {
 table.table-sm.table-hover {
     cursor: pointer;
 }
-
 label {
     color: rgba(220, 233, 235, 1);
 }

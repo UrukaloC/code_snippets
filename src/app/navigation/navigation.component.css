@@ -3,6 +3,10 @@
       margin-left : 1.4em;
       margin-right : 1.4em;
   }
+
+  .space {
+    display: none!important;
+  }
 }
 
 .navbar-light .navbar-nav .nav-link {
@@ -73,14 +77,12 @@ img {
   font-size: 18px;
 }
 
-/* Responsive navigation */
-@media screen and (min-width: 992px) {
-  .space {
-    display: none!important;
-  }
-}
-
 /* Space so dropdown list can be seen in mobile-mod */
 .space {
   padding-right: 70px;
+}
+
+/* Coursor for logout */
+.cursor {
+  cursor: pointer;
 }

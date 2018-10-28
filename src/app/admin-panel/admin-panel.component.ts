@@ -9,16 +9,16 @@ import { Observable } from 'rxjs';
   styleUrls: ['./admin-panel.component.css']
 })
 export class AdminPanelComponent implements OnInit {
-  p;
   user: User;
   public searchString: string;
   public usersList: Observable<User[]>;
-
+  p: any;
   constructor(private userService: UserService) { }
 
   ngOnInit() {
     this.getUsers();
   }
+
   getUsers() {
     this.usersList = this.userService.getUsers().valueChanges();
   }
@@ -29,5 +29,5 @@ export class AdminPanelComponent implements OnInit {
   unblockUser(id: string) {
     this.userService.unblockUser(id);
   }
-}
 
+}
