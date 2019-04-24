@@ -13,6 +13,7 @@ export class TestDataDetailsComponent implements OnInit {
   data: DataTest;
   uid: string;
   list: DataTest;
+  language: string;
 
   constructor(private _location: Location,
               private _route: ActivatedRoute,
