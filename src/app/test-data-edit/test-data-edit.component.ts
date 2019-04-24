@@ -16,6 +16,7 @@ export class TestDataEditComponent implements OnInit {
   data: DataTest;
   eventSub: Subscription;
   uid: string;
+  language: string; //OVO JE DODATO ZA JEZIK
 
   constructor(private _dataService: TestDataService,
               private _router: Router,
@@ -27,6 +28,7 @@ export class TestDataEditComponent implements OnInit {
         this._dataService.getSnippet(this.uid).subscribe((data: DataTest) => {
             data.uid = this.uid;
             this.data = data;
+            this.language = this.data.programmL; // I OVO DEFINISE KAKO SE SPECIFIKUJE NA KOJI JEZIK SE ODNOSI
         });
 
   }
@@ -37,8 +39,6 @@ export class TestDataEditComponent implements OnInit {
 
    isDataPrivate(p: boolean): void {
     this.data.isPrivate = p;
-
-    console.log(this.data.isPrivate);
   }
 
   onSubmit() {
